@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=Wheel
+comment0.text=\r\n\ Representa\ una\ rueda\ de\ la\ maquina\ tragamonedas\r\n\ Una\ rueda\ se\ representa\ con\ una\ lista\ ordenada\ de\ simbolos\ e\ identifica\ cual\ esta\r\n\ ahora\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=Wheel()
+comment1.text=\r\n\ Crea\ una\ rueda\ vacia.\r\n
+comment2.params=pos\ color
+comment2.target=void\ addSymbol(int,\ java.lang.String)
+comment2.text=\r\n\ Agrega\ un\ simbolo\ nuevo\ en\ la\ posicion\ que\ indique\ la\ rueda\r\n\ Si\ la\ posicion\ es\ menor\ a\ 1,\ se\ usa\ la\ posicion\ 1\ y\ si\ es\ mayor\ a\ el\ numero\r\n\ de\ simbolos\ del\ array\ se\ usa\ la\ ultima\ posible.\r\n\ \r\n\ @param\ \ int\ posicion\r\n\ @param\ \ String\ color\ \ \r\n
+comment3.params=pos\ max
+comment3.target=int\ normalize(int,\ int)
+comment3.text=\r\n\ Ajusta\ la\ posicion\ que\ se\ ingresa\ para\ que\ entre\ dentro\ del\ rango\ valido.\r\n
+comment4.params=
+comment4.target=java.lang.String\ currentSymbol()
+comment4.text=\r\n\ Retorna\ el\ color\ del\ simbolo\ que\ esta\ visible\ en\ este\ momento.\r\n\r\n\ @return\ el\ color\ visible,\ o\ null\ si\ la\ rueda\ no\ tiene\ simbolos\r\n
+comment5.params=
+comment5.target=java.lang.String[]\ symbolsList()
+comment5.text=\r\n\ Retorna\ los\ colores\ de\ todos\ los\ simbolos\ de\ la\ rueda,\ en\ el\r\n\ orden\ en\ que\ estan\ ubicados,\ iniciando\ por\ el\ 1.\r\n\r\n\ @return\ arreglo\ con\ los\ colores\ de\ los\ simbolos\r\n
+numComments=6
