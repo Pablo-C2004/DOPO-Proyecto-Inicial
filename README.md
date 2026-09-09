@@ -74,3 +74,5 @@ La del segundo laboratorio ya que nos permitió entender como podemos realizar p
 https://docs.oracle.com/javase/8/docs/api/
 https://stackoverflow.com/questions/4412179/best-way-to-make-javas-modulus-behave-like-it-should-with-negative-numbers
 https://stackoverflow.com/questions/1082917/mod-of-negative-number-is-melting-my-brain
+<img width="504" height="489" alt="image" src="https://github.com/user-attachments/assets/32f4ba51-a8c4-4f80-8de3-e0c21be8ab00" />
+
