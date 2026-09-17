@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=MachineDisplay
+comment0.text=\r\n\ Representacion\ visual\ de\ la\ maquina\ tragamonedas,\ construida\r\n\ REUTILIZANDO\ las\ clases\ del\ paquete\ shapes\:\r\n\ \ \ -\ un\ Rectangle\ representa\ el\ "cuerpo"\ de\ la\ maquina\ y\ cambia\ de\r\n\ \ \ \ \ color\ cuando\ la\ combinacion\ actual\ es\ ganadora.\r\n\ \ \ -\ un\ Circle\ por\ cada\ rueda\ representa\ el\ simbolo\ que\ esa\ rueda\r\n
+comment1.params=
+comment1.target=MachineDisplay()
+comment1.text=\r\n\ Crea\ la\ representacion\ visual\ (todavia\ oculta).\r\n
+comment2.params=
+comment2.target=void\ makeVisible()
+comment2.text=\r\n\ Muestra\ la\ maquina\ en\ pantalla.\r\n
+comment3.params=
+comment3.target=void\ makeInvisible()
+comment3.text=\r\n\ Oculta\ la\ maquina\ de\ la\ pantalla.\r\n
+comment4.params=configuration\ jackpot
+comment4.target=void\ show(java.lang.String[],\ boolean)
+comment4.text=\r\n\ Redibuja\ la\ maquina\ completa\ con\ la\ configuracion\ actual\:\ borra\r\n\ los\ circulos\ anteriores\ y\ crea\ uno\ nuevo\ por\ cada\ simbolo\r\n\ visible,\ en\ orden\ de\ izquierda\ a\ derecha.\ El\ fondo\ cambia\ de\r\n\ color\ si\ la\ configuracion\ es\ ganadora.\r\n\r\n\ @param\ configuration\ colores\ actuales\ de\ cada\ rueda,\ izquierda\ a\ derecha\r\n\ @param\ jackpot\ true\ si\ la\ combinacion\ actual\ es\ ganadora\r\n
+numComments=5
