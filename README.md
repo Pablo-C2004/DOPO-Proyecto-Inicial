@@ -1,5 +1,5 @@
 # DOPO-Proyecto-Inicial
-Ciclo 1
+Ciclo 1.
 1. ¿Cuáles fueron los mini-ciclos definidos? Justifíquenlos.
 
 Crear la máquina y administrar ruedas (SlotMachine(), addWheel, delWheel) — se hizo primero porque todo lo demás depende de tener ruedas para operar sobre ellas.
