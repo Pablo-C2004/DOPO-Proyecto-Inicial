@@ -1,20 +1,16 @@
 import java.util.ArrayList;
+
 /**
- * Representa una rueda de la maquina tragamonedas
- * Una rueda se representa con una lista ordenada de simbolos e identifica cual esta
- * ahora
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Representa, en general, una rueda de la maquina tragamonedas. 
  */
-public class Wheel
+public abstract class Wheel implements Labeled
 {
-    private ArrayList<Symbol> symbols;
-    private int currentPosition;
-    private boolean locked;
+    protected ArrayList<Symbol> symbols;
+    protected int currentPosition;
+    protected boolean locked;
 
     /**
-     * Crea una rueda vacia.
+     * Crea una rueda vacia, sin simbolos todavia y sin estar fija.
      */
     public Wheel()
     {
@@ -24,23 +20,21 @@ public class Wheel
     }
 
     /**
-     * Agrega un simbolo nuevo en la posicion que indique la rueda
-     * Si la posicion es menor a 1, se usa la posicion 1 y si es mayor a el numero
-     * de simbolos del array se usa la ultima posible.
-     * 
-     * @param  int posicion donde se inserta
-     * @param  color color del nuevo simbolo
+     * Agrega un simbolo ya construido en la posicion indicada.
+     *
+     * @param pos posicion donde se inserta (empieza en 1)
+     * @param symbol el simbolo a agregar
      */
-    public void addSymbol(int pos, String color)
+    public void addSymbol(int pos, Symbol symbol)
     {
         int max = symbols.size() + 1;
         int index = normalize(pos, max);
-        symbols.add(index - 1, new Symbol(color));
+        symbols.add(index - 1, symbol);
     }
-    
+
     /**
-     * Elimina el simbolo del color indicado, si existe en la rueda.
-     * 
+     * Elimina el simbolo del color indicado, si existe en esta rueda.
+     *
      * @param color color del simbolo a eliminar
      * @return true si el simbolo existia y fue eliminado
      */
@@ -53,47 +47,36 @@ public class Wheel
                 symbols.remove(i);
                 if (currentPosition >= symbols.size())
                 {
-                    currentPosition = Math.max(0, symbols.size() -1);
+                    currentPosition = Math.max(0, symbols.size() - 1);
                 }
-                return true;
-            }
-        }
-            return false;
-    }
-    /**
-     * Hace que la rueda muestre el simbolo del color indicado
-     * 
-     * @param color color del simbolo que se quiere mostrar
-     * @return true si el simbolo existe en la rueda
-     */
-    public boolean placeSymbol(String color)
-    {
-        for (int i = 0; i < symbols.size(); i++)
-        {
-            if(symbols.get(i).getColor().equals(color))
-            {
-                currentPosition = i;
                 return true;
             }
         }
         return false;
     }
-    
+
     /**
-     * Gira la rueda: Elige al azar uno de los simbolos.
+     * Hace que la rueda muestre el simbolo del color indicado.
+     *
+     * @param color color del simbolo que se quiere mostrar
+     * @return true si el simbolo existe en esta rueda
      */
-    public void spin()
+    public boolean placeSymbol(String color)
     {
-        if (!symbols.isEmpty())
+        for (int i = 0; i < symbols.size(); i++)
         {
-            currentPosition = (int)(Math.random() * symbols.size());
+            if (symbols.get(i).getColor().equals(color))
+            {
+                setCurrentPosition(i);
+                return true;
+            }
         }
+        return false;
     }
-    
+
     /**
-     * Rota la rueda exactamente un paso, hacia adelante o hacia atras.
-     * Si llega al final de la lista, continua desde el principio (y
-     * al reves), simulando una rueda real.
+     * Mueve la rueda exactamente un paso, hacia adelante o hacia
+     * atras.
      *
      * @param direction 1 para avanzar un paso, -1 para retroceder uno
      */
@@ -103,9 +86,28 @@ public class Wheel
         {
             return;
         }
-        currentPosition = (currentPosition + direction + symbols.size()) % symbols.size();
+        setCurrentPosition((currentPosition + direction + symbols.size()) % symbols.size());
     }
- 
+
+    /**
+     * Gira la rueda. Cada tipo de rueda decide que significa
+     * girar: una normal elige un simbolo al azar, pero
+     * una rueda lefty no elige al azar sino que copia a
+     * la rueda que tiene a su izquierda.
+     */
+    public abstract void spin();
+
+    /**
+     * Le avisa a la rueda cual es, en este momento, la rueda que
+     * tiene a su izquierda o null si es la primera de todas.
+     *
+     * @param left la rueda que esta inmediatamente a la izquierda
+     */
+    public void updateLeftNeighbor(Wheel left)
+    {
+        // las ruedas lefty necesitan saber que tienen a su izquierda
+    }
+
     /**
      * Fija la rueda: mientras este fija no debe girar.
      */
@@ -113,7 +115,7 @@ public class Wheel
     {
         locked = true;
     }
- 
+
     /**
      * Suelta la rueda, si estaba fija.
      */
@@ -121,7 +123,7 @@ public class Wheel
     {
         locked = false;
     }
- 
+
     /**
      * Indica si la rueda esta fija actualmente.
      *
@@ -131,7 +133,27 @@ public class Wheel
     {
         return locked;
     }
- 
+
+    /**
+     * Indica si esta rueda se puede eliminar de la maquina.
+     *
+     * @return true si se permite eliminar esta rueda
+     */
+    public boolean allowsRemoval()
+    {
+        return true;
+    }
+
+    /**
+     * Indica si esta rueda se puede intercambiar con otra
+     *
+     * @return true si se permite intercambiar esta rueda
+     */
+    public boolean allowsSwap()
+    {
+        return true;
+    }
+
     /**
      * Indica si esta rueda tiene un simbolo del color indicado.
      *
@@ -149,25 +171,40 @@ public class Wheel
         }
         return false;
     }
-    
+
     /**
-     * Retorna el color del simbolo que esta visible en este momento.
-     * 
-     * @return el color visible o null si la rueda está vacia.
+     * Retorna el objeto Symbol que esta visible en este momento.
+     *
+     * @return el simbolo visible, o null si la rueda no tiene simbolos
      */
-    public String currentSymbol()
+    public Symbol getCurrentSymbol()
     {
         if (symbols.isEmpty())
         {
             return null;
         }
-        return symbols.get(currentPosition).getColor();
+        return symbols.get(currentPosition);
     }
-    
+
     /**
-     * Retorna los colores de todos los simbolos de la rueda, en el orden
-     * en que estan ubicados
-     * 
+     * Retorna el color del simbolo que esta visible en este momento.
+     *
+     * @return el color visible, o null si la rueda no tiene simbolos
+     */
+    public String currentSymbol()
+    {
+        Symbol current = getCurrentSymbol();
+        if (current == null)
+        {
+            return null;
+        }
+        return current.getColor();
+    }
+
+    /**
+     * Retorna los colores de todos los simbolos de la rueda, en el
+     * orden en que estan ubicados, iniciando por el 1.
+     *
      * @return arreglo con los colores de los simbolos
      */
     public String[] symbolsList()
@@ -179,15 +216,32 @@ public class Wheel
         }
         return result;
     }
-    
+
     /**
-     * Ajusta la posicion que se ingresa para que entre dentro del rango valido.
-     * 
-     * @param int posicion pedida
-     * @param max valor permitido
-     * @return la posicion ajustada
+     * Cambia cual es la posicion visible, y le avisa al simbolo que
+     * queda visible que fue seleccionado.
+     *
+     * @param index la nueva posicion visible
      */
-    private int normalize(int pos, int max)
+    protected void setCurrentPosition(int index)
+    {
+        currentPosition = index;
+        Symbol current = getCurrentSymbol();
+        if (current != null)
+        {
+            current.onSelected();
+        }
+    }
+
+    /**
+     * Ajusta una posicion pedida para que quede dentro del rango
+     * valido (1, max).
+     *
+     * @param pos posicion pedida
+     * @param max valor maximo permitido
+     * @return la posicion ya ajustada
+     */
+    protected int normalize(int pos, int max)
     {
         if (pos < 1)
         {

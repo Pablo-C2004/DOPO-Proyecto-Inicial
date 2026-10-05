@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=NormalWheel
+comment0.text=\r\n\ La\ rueda\ de\ toda\ la\ vida\:\ cuando\ gira,\ elige\ un\ simbolo\ cualquiera\r\n\ al\ azar.\r\n\r\n\ @author\ Proyecto\ DOPO-POOB\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=void\ spin()
+comment1.text=\r\n\ Gira\ la\ rueda\ y\ deja\ un\ simbolo\ cualquiera\ visible.\r\n
+comment2.params=
+comment2.target=java.lang.String\ getTypeLabel()
+comment2.text=\r\n\ Retorna\ la\ etiqueta\ de\ este\ tipo\ de\ rueda.\r\n\r\n\ @return\ siempre\ "N"\r\n
+numComments=3

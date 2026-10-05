@@ -1,10 +1,19 @@
 #BlueJ class context
 comment0.target=Symbol
-comment0.text=\r\n\ Representa\ un\ simbolo\ de\ la\ maquina\ tragamonedas,\ cada\ simbolo\ se\ identifica\ por\r\n\ un\ color\ en\ CSS.\r\n\ \r\n\ @author\ (your\ name)\ \r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ Representa,\ en\ general,\ un\ simbolo\ de\ la\ maquina\ tragamonedas.\r\n
 comment1.params=color
 comment1.target=Symbol(java.lang.String)
-comment1.text=\r\n\ Crea\ un\ simbolo\ nuevo\ con\ el\ color\ que\ se\ indica\r\n
+comment1.text=\r\n\ Crea\ un\ simbolo\ del\ color\ indicado,\ con\ tamano\ normal\ y\r\n\ visible\ desde\ el\ principio.\r\n\r\n\ @param\ color\ color\ del\ simbolo,\ en\ formato\ CSS\r\n
 comment2.params=
 comment2.target=java.lang.String\ getColor()
-comment2.text=\r\n\ Retorna\ el\ color\ del\ simbolo\r\n\ \r\n\ @return\ \ \ \ \ color\ del\ simbolo\r\n
-numComments=3
+comment2.text=\r\n\ Retorna\ el\ color\ de\ este\ simbolo.\r\n\r\n\ @return\ el\ color\ del\ simbolo\r\n
+comment3.params=
+comment3.target=int\ getSize()
+comment3.text=\r\n\ Retorna\ el\ tamano\ con\ el\ que\ se\ deberia\ dibujar\ este\ simbolo\r\n\ ahora\ mismo\ (puede\ cambiar\ con\ el\ tiempo,\ segun\ el\ tipo).\r\n\r\n\ @return\ el\ tamano\ actual,\ en\ pixeles\r\n
+comment4.params=
+comment4.target=boolean\ isVisible()
+comment4.text=\r\n\ Dice\ si\ este\ simbolo\ se\ deberia\ ver\ en\ pantalla\ en\ este\r\n\ momento,\ o\ si\ por\ ahora\ esta\ "escondido".\r\n\r\n\ @return\ true\ si\ el\ simbolo\ deberia\ dibujarse\r\n
+comment5.params=
+comment5.target=void\ onSelected()
+comment5.text=\r\n\ Se\ llama\ cada\ vez\ que\ este\ simbolo\ pasa\ a\ ser\ el\ visible\ en\ su\r\n\ rueda.\ Por\ defecto\ no\ pasa\ nada;\ los\ tipos\ de\ simbolo\ que\r\n\ quieran\ reaccionar\ a\ esto\ (encogerse,\ esconderse...)\r\n\ sobreescriben\ este\ metodo.\r\n
+numComments=6

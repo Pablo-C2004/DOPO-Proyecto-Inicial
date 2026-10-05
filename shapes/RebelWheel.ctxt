@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=RebelWheel
+comment0.text=\r\n\ Una\ rueda\ que\ no\ se\ deja\ mandar\:\ gira\ normal\ (al\ azar),\ pero\ no\r\n\ acepta\ que\ la\ fijen,\ ni\ que\ la\ intercambien\ con\ otra,\ ni\ que\ la\r\n\ eliminen\ de\ la\ maquina.\r\n\r\n\ @author\ Proyecto\ DOPO-POOB\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=void\ spin()
+comment1.text=\r\n\ Gira\ la\ rueda\ y\ deja\ un\ simbolo\ cualquiera\ visible,\ igual\ que\r\n\ una\ rueda\ normal.\r\n
+comment2.params=
+comment2.target=void\ lock()
+comment2.text=\r\n\ Esta\ rueda\ ignora\ cualquier\ intento\ de\ fijarla\:\ no\ pasa\ nada.\r\n
+comment3.params=
+comment3.target=boolean\ isLocked()
+comment3.text=\r\n\ Esta\ rueda\ nunca\ queda\ fija,\ sin\ importar\ lo\ que\ se\ intente.\r\n\r\n\ @return\ siempre\ false\r\n
+comment4.params=
+comment4.target=boolean\ allowsRemoval()
+comment4.text=\r\n\ Esta\ rueda\ no\ se\ puede\ eliminar\ de\ la\ maquina.\r\n\r\n\ @return\ siempre\ false\r\n
+comment5.params=
+comment5.target=boolean\ allowsSwap()
+comment5.text=\r\n\ Esta\ rueda\ no\ se\ puede\ intercambiar\ con\ otra.\r\n\r\n\ @return\ siempre\ false\r\n
+comment6.params=
+comment6.target=java.lang.String\ getTypeLabel()
+comment6.text=\r\n\ Retorna\ la\ etiqueta\ de\ este\ tipo\ de\ rueda.\r\n\r\n\ @return\ siempre\ "R"\r\n
+numComments=7

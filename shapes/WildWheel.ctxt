@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=WildWheel
+comment0.text=\r\n\ El\ tipo\ de\ rueda\ nuevo\ que\ propusimos\ para\ este\ ciclo\:\ es\ una\ rueda\r\n\ un\ poco\ exagerada.\ Gira\ normal\ al\ azar,\ pero\ cuando\ se\ le\ pide\ que\r\n\ avance\ paso\ a\ paso,\ en\ realidad\ avanza\ el\ doble\ de\ lo\ pedido,\ como\r\n\ si\ no\ pudiera\ quedarse\ quieta\ justo\ donde\ se\ le\ dice.\r\n\r\n\ @author\ Proyecto\ DOPO-POOB\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=void\ spin()
+comment1.text=\r\n\ Gira\ la\ rueda\ y\ deja\ un\ simbolo\ cualquiera\ visible,\ igual\ que\r\n\ una\ rueda\ normal.\r\n
+comment2.params=direction
+comment2.target=void\ rotateOneStep(int)
+comment2.text=\r\n\ Avanza\ (o\ retrocede)\ el\ doble\ de\ pasos\ de\ lo\ que\ normalmente\r\n\ avanzaria\ una\ rueda\ comun.\r\n\r\n\ @param\ direction\ 1\ para\ avanzar,\ -1\ para\ retroceder\r\n
+comment3.params=
+comment3.target=java.lang.String\ getTypeLabel()
+comment3.text=\r\n\ Retorna\ la\ etiqueta\ de\ este\ tipo\ de\ rueda.\r\n\r\n\ @return\ siempre\ "W"\r\n
+numComments=4

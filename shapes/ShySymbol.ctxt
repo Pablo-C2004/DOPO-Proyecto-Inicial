@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=ShySymbol
+comment0.text=\r\n\ Un\ simbolo\ timido\:\ cada\ vez\ que\ le\ toca\ ser\ el\ visible,\ cambia\ de\r\n\ opinion\ y\ alterna\ entre\ mostrarse\ y\ esconderse.\r\n\r\n\ @author\ Proyecto\ DOPO-POOB\r\n\ @version\ 1.0\r\n
+comment1.params=color
+comment1.target=ShySymbol(java.lang.String)
+comment1.text=\r\n\ Crea\ un\ simbolo\ timido\ del\ color\ indicado.\ Empieza\ visible.\r\n\r\n\ @param\ color\ color\ del\ simbolo\r\n
+comment2.params=
+comment2.target=void\ onSelected()
+comment2.text=\r\n\ Cada\ vez\ que\ lo\ seleccionan,\ cambia\ su\ estado\:\ si\ estaba\r\n\ visible\ pasa\ a\ invisible,\ y\ si\ estaba\ invisible\ pasa\ a\ visible.\r\n
+comment3.params=
+comment3.target=java.lang.String\ getTypeLabel()
+comment3.text=\r\n\ Retorna\ la\ etiqueta\ de\ este\ tipo\ de\ simbolo.\r\n\r\n\ @return\ siempre\ "S"\r\n
+numComments=4

@@ -1,0 +1,19 @@
+#BlueJ class context
+comment0.target=LeftyWheel
+comment0.text=\r\n\ Una\ rueda\ copiona\:\ en\ vez\ de\ girar\ por\ su\ cuenta,\ cuando\ le\ toca\r\n\ moverse\ simplemente\ copia\ lo\ que\ esta\ mostrando\ la\ rueda\ que\ tiene\r\n\ a\ su\ izquierda.\ Si\ no\ tiene\ ninguna\ rueda\ a\ la\ izquierda\ (porque\ es\r\n\ la\ primera),\ no\ tiene\ a\ quien\ copiarle,\ asi\ que\ no\ hace\ nada.\r\n\r\n\ @author\ Proyecto\ DOPO-POOB\r\n\ @version\ 1.0\r\n
+comment1.params=left
+comment1.target=void\ updateLeftNeighbor(Wheel)
+comment1.text=\r\n\ Guarda\ cual\ es\ la\ rueda\ que\ esta\ a\ su\ izquierda\ en\ este\r\n\ momento,\ para\ saber\ a\ quien\ copiarle\ despues.\r\n\r\n\ @param\ left\ la\ rueda\ vecina\ de\ la\ izquierda\ (o\ null\ si\ no\ hay)\r\n
+comment2.params=
+comment2.target=void\ spin()
+comment2.text=\r\n\ En\ vez\ de\ girar\ al\ azar,\ copia\ el\ simbolo\ que\ tiene\ visible\r\n\ su\ vecina\ de\ la\ izquierda.\r\n
+comment3.params=direction
+comment3.target=void\ rotateOneStep(int)
+comment3.text=\r\n\ Aunque\ le\ pidan\ un\ giro\ paso\ a\ paso,\ esta\ rueda\ prefiere\ copiar\r\n\ a\ su\ vecina\ en\ vez\ de\ moverse\ por\ su\ cuenta\ un\ solo\ paso.\r\n\r\n\ @param\ direction\ se\ ignora,\ esta\ rueda\ no\ gira\ sola\r\n
+comment4.params=
+comment4.target=void\ copyFromNeighbor()
+comment4.text=\r\n\ Busca,\ entre\ sus\ propios\ simbolos,\ el\ mismo\ color\ que\ tiene\r\n\ visible\ su\ vecina,\ y\ lo\ pone\ como\ su\ propio\ simbolo\ visible.\r\n
+comment5.params=
+comment5.target=java.lang.String\ getTypeLabel()
+comment5.text=\r\n\ Retorna\ la\ etiqueta\ de\ este\ tipo\ de\ rueda.\r\n\r\n\ @return\ siempre\ "L"\r\n
+numComments=6

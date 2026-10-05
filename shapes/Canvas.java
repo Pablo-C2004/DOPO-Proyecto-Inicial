@@ -11,7 +11,15 @@ import java.util.*;
  * @author: Bruce Quig
  * @author: Michael Kolling (mik)
  *
- * @version: 1.6 (shapes)
+ * EXTENSION (Proyecto DOPO-POOB, slotMachine):
+ * El metodo setForegroundColor original solo reconocia 7 colores fijos
+ * (red, black, blue, yellow, green, magenta, white). Se extendio usando
+ * un HashMap para soportar mas nombres de color en formato CSS, ya que
+ * el simulador de la maquina tragamonedas los necesita. Si se requiere
+ * un color adicional, basta con agregar una linea en el bloque static
+ * de mas abajo. El resto de la clase no se modifico.
+ *
+ * @version: 1.7 (shapes, extendido con mas colores CSS)
  */
 public class Canvas{
     // Note: The implementation of this class (specifically the handling of
@@ -42,10 +50,11 @@ public class Canvas{
     private Image canvasImage;
     private List <Object> objects;
     private HashMap <Object,ShapeDescription> shapes;
-    
-     // Mapa de nombres de color CSS -> Color de Java. Creado por Claude
+
+    // Mapa de nombres de color CSS -> Color de Java. Este es el unico
+    // agregado nuevo respecto al Canvas original del curso.
     private static HashMap<String, Color> cssColors;
- 
+
     static {
         cssColors = new HashMap<String, Color>();
         cssColors.put("red", Color.red);
@@ -147,22 +156,23 @@ public class Canvas{
      * @param  newColour   the new colour for the foreground of the Canvas 
      */
     public void setForegroundColor(String colorString){
-        if(colorString.equals("red"))
-            graphic.setColor(Color.red);
-        else if(colorString.equals("black"))
-            graphic.setColor(Color.black);
-        else if(colorString.equals("blue"))
-            graphic.setColor(Color.blue);
-        else if(colorString.equals("yellow"))
-            graphic.setColor(Color.yellow);
-        else if(colorString.equals("green"))
-            graphic.setColor(Color.green);
-        else if(colorString.equals("magenta"))
-            graphic.setColor(Color.magenta);
-        else if(colorString.equals("white"))
-            graphic.setColor(Color.white);
-        else
-            graphic.setColor(Color.black);
+        // extension ciclo 3: ademas de nombres CSS, acepta codigo
+        // hexadecimal "#RRGGBB" (tambien es sintaxis CSS valida), para
+        // poder generar tantos colores distintos como ruedas se necesiten.
+        if(colorString != null && colorString.startsWith("#")) {
+            try {
+                graphic.setColor(Color.decode(colorString));
+                return;
+            } catch (NumberFormatException e) {
+                graphic.setColor(Color.black);
+                return;
+            }
+        }
+        Color color = (colorString == null) ? null : cssColors.get(colorString.toLowerCase());
+        if(color == null) {
+            color = Color.black;
+        }
+        graphic.setColor(color);
     }
 
     /**

@@ -1,0 +1,7 @@
+#BlueJ class context
+comment0.target=Labeled
+comment0.text=\r\n\ Algo\ que\ se\ puede\ identificar\ visualmente\ con\ una\ etiqueta\ corta.\r\n\ La\ implementan\ tanto\ las\ ruedas\ como\ los\ simbolos,\ aunque\ esas\ dos\r\n\ familias\ de\ clases\ no\ tengan\ nada\ que\ ver\ entre\ si\ \u2014\ por\ eso\ esto\r\n\ es\ una\ interfaz\ y\ no\ una\ clase\:\ lo\ unico\ que\ comparten\ es\ que\r\n\ ambas\ quieren\ poder\ decir\ "yo\ soy\ de\ este\ tipo".\r\n\r\n\ @author\ Proyecto\ DOPO-POOB\r\n\ @version\ 1.0\r\n
+comment1.params=
+comment1.target=java.lang.String\ getTypeLabel()
+comment1.text=\r\n\ Da\ una\ etiqueta\ corta\ que\ identifica\ el\ tipo\ concreto\ del\r\n\ objeto\ (por\ ejemplo\ "N"\ para\ normal,\ "L"\ para\ lefty).\r\n\r\n\ @return\ una\ letra\ o\ palabra\ corta\ que\ identifica\ el\ tipo\r\n
+numComments=2

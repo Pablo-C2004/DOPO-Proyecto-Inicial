@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=NormalSymbol
+comment0.text=\r\n\ El\ simbolo\ de\ toda\ la\ vida\:\ solo\ tiene\ un\ color,\ y\ no\ le\ pasa\ nada\r\n\ especial\ cuando\ lo\ seleccionan.\r\n\r\n\ @author\ Proyecto\ DOPO-POOB\r\n\ @version\ 1.0\r\n
+comment1.params=color
+comment1.target=NormalSymbol(java.lang.String)
+comment1.text=\r\n\ Crea\ un\ simbolo\ normal\ del\ color\ indicado.\r\n\r\n\ @param\ color\ color\ del\ simbolo\r\n
+comment2.params=
+comment2.target=java.lang.String\ getTypeLabel()
+comment2.text=\r\n\ Retorna\ la\ etiqueta\ de\ este\ tipo\ de\ simbolo.\r\n\r\n\ @return\ siempre\ "N"\r\n
+numComments=3

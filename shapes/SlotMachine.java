@@ -1,17 +1,17 @@
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import java.util.Collections;
+import javax.swing.JOptionPane;
 
 /**
  * Clase principal del simulador. Representa una maquina tragamonedas
  * con varias ruedas. Permite crear/eliminar ruedas y simbolos, girar
  * las ruedas, consultar el estado del juego y mostrar/ocultar la
  * maquina en pantalla.
- *
  */
 public class SlotMachine
 {
     private static final int STEP_DELAY_MS = 200;
+
     private ArrayList<Wheel> wheels;
     private MachineDisplay display;
     private boolean visible;
@@ -30,20 +30,63 @@ public class SlotMachine
     }
 
     /**
-     * Agrega una rueda nueva en la posicion indicada.
+     * Crea una maquina con n ruedas y n simbolos (un color distinto
+     * por simbolo), inicial al azar que nunca es jackpot de entrada.
+     * 
+     * @param n numero de ruedas (y de simbolos distintos por rueda)
+     */
+    public SlotMachine(int n)
+    {
+        this();
+        if (n < 1)
+        {
+            lastOperationOk = false;
+            return;
+        }
+
+        String[] colors = generateDistinctColors(n);
+        for (int i = 1; i <= n; i++)
+        {
+            addWheel(i);
+        }
+        for (int i = 1; i <= n; i++)
+        {
+            addSymbol(i, colors[i - 1]);
+        }
+
+        randomizeWithoutJackpot();
+        lastOperationOk = true;
+    }
+
+    /**
+     * Agrega una rueda normal en la posicion indicada.
      *
      * @param pos posicion donde se inserta la rueda (empieza en 1)
      */
     public void addWheel(int pos)
     {
+        addWheel("normal", pos);
+    }
+
+    /**
+     * Agrega una rueda del tipo indicado en la posicion dada. Los
+     * tipos son "normal", "lefty", "rebel" y "wild"                                                                    
+     *
+     * @param type tipo de rueda a crear
+     * @param pos posicion donde se inserta la rueda (empieza en 1)
+     */
+    public void addWheel(String type, int pos)
+    {
         int index = normalize(pos, wheels.size() + 1);
-        wheels.add(index - 1, new Wheel());
+        wheels.add(index - 1, createWheel(type));
+        rewireLeftyNeighbors();
         lastOperationOk = true;
         refreshDisplay();
     }
 
     /**
-     * Elimina la rueda que se encuentra en la posicion indicada.
+     * Elimina la rueda que se encuentra en la posicion indicada. Una
+     * rueda de tipo rebel no se deja eliminar.
      *
      * @param pos posicion de la rueda a eliminar (empieza en 1)
      */
@@ -55,20 +98,40 @@ public class SlotMachine
             return;
         }
         int index = normalize(pos, wheels.size());
+        if (!wheels.get(index - 1).allowsRemoval())
+        {
+            reportError("Esa rueda no se deja eliminar");
+            return;
+        }
         wheels.remove(index - 1);
+        rewireLeftyNeighbors();
         lastOperationOk = true;
         refreshDisplay();
     }
 
     /**
-     * Agrega un simbolo nuevo (identificado por su color) en la
-     * posicion indicada, en TODAS las ruedas de la maquina (todas las
-     * ruedas comparten los mismos simbolos en el mismo orden).
+     * Agrega un simbolo normal identificado por su color en la
+     * posicion indicada, en todas las ruedas. Es un atajo para
+     * addSymbol("normal", pos, color).
      *
      * @param pos posicion del simbolo dentro de cada rueda (empieza en 1)
      * @param color color del nuevo simbolo, en formato CSS
      */
     public void addSymbol(int pos, String color)
+    {
+        addSymbol("normal", pos, color);
+    }
+
+    /**
+     * Agrega un simbolo del tipo indicado identificado por su color
+     * en la posicion dada, en todas las ruedas de la maquina. Los
+     * tipos son "normal", "ephemeral", "shy" y "growing"
+     *
+     * @param type tipo de simbolo a crear
+     * @param pos posicion del simbolo dentro de cada rueda (empieza en 1)
+     * @param color color del nuevo simbolo, en formato CSS
+     */
+    public void addSymbol(String type, int pos, String color)
     {
         if (wheels.isEmpty())
         {
@@ -77,7 +140,7 @@ public class SlotMachine
         }
         for (Wheel wheel : wheels)
         {
-            wheel.addSymbol(pos, color);
+            wheel.addSymbol(pos, createSymbol(type, color));
         }
         lastOperationOk = true;
         refreshDisplay();
@@ -131,7 +194,8 @@ public class SlotMachine
     }
 
     /**
-     * Gira una sola rueda de forma aleatoria. Una rueda fija no gira.
+     * Gira una sola rueda. Una rueda fija no gira; las demas giran
+     * cada una a su manera.
      *
      * @param wheel numero de la rueda a girar (empieza en 1)
      */
@@ -153,8 +217,8 @@ public class SlotMachine
     }
 
     /**
-     * Gira todas las ruedas de la maquina de forma aleatoria. Las
-     * ruedas fijas se dejan tal como estan.
+     * Gira todas las ruedas de la maquina. Las ruedas fijas se dejan
+     * tal como estan.
      */
     public void spin()
     {
@@ -180,10 +244,10 @@ public class SlotMachine
         lastOperationOk = true;
         refreshDisplay();
     }
-    
+
     /**
-     * Intercambia el contenido completo de dos ruedas (sus simbolos y
-     * el que tienen visible). Ninguna de las dos puede estar fija.
+     * Intercambia el contenido completo de dos ruedas
+     * Ninguna de las dos puede estar fija, ni ser de tipo rebel.
      *
      * @param wheel1 numero de la primera rueda (empieza en 1)
      * @param wheel2 numero de la segunda rueda (empieza en 1)
@@ -195,19 +259,22 @@ public class SlotMachine
             reportError("Alguna de las ruedas indicadas no existe");
             return;
         }
-        if (wheels.get(wheel1 - 1).isLocked() || wheels.get(wheel2 - 1).isLocked())
+        Wheel w1 = wheels.get(wheel1 - 1);
+        Wheel w2 = wheels.get(wheel2 - 1);
+        if (w1.isLocked() || w2.isLocked() || !w1.allowsSwap() || !w2.allowsSwap())
         {
-            reportError("No se puede intercambiar una rueda fija");
+            reportError("No se puede intercambiar una rueda fija o de tipo rebel");
             return;
         }
         Collections.swap(wheels, wheel1 - 1, wheel2 - 1);
+        rewireLeftyNeighbors();
         lastOperationOk = true;
         refreshDisplay();
     }
- 
+
     /**
-     * Fija una rueda: mientras este fija no gira ni se puede
-     * intercambiar con otra.
+     * Fija una rueda mientras este fija no gira ni se puede
+     * intercambiar con otra. (Una rueda de tipo rebel ignora esto).
      *
      * @param wheel numero de la rueda a fijar (empieza en 1)
      */
@@ -222,7 +289,7 @@ public class SlotMachine
         lastOperationOk = true;
         refreshDisplay();
     }
- 
+
     /**
      * Suelta una rueda previamente fijada.
      *
@@ -239,11 +306,13 @@ public class SlotMachine
         lastOperationOk = true;
         refreshDisplay();
     }
- 
+
     /**
      * Rota una rueda un numero exacto de pasos. Un numero positivo
      * gira en un sentido, uno negativo en el sentido contrario. Si el
-     * simulador esta visible, el giro se muestra paso a paso.
+     * simulador esta visible, el giro se muestra paso a paso. Cada
+     * tipo de rueda puede reaccionar distinto a esto (una wild avanza
+     * el doble, una lefty copia a su vecina en vez de moverse sola).
      *
      * @param wheel numero de la rueda a rotar (empieza en 1)
      * @param steps cantidad de pasos a rotar (puede ser negativo)
@@ -261,7 +330,7 @@ public class SlotMachine
             reportError("La rueda " + wheel + " esta fija");
             return;
         }
- 
+
         int direction = steps < 0 ? -1 : 1;
         int totalSteps = Math.abs(steps);
         for (int i = 0; i < totalSteps; i++)
@@ -272,11 +341,10 @@ public class SlotMachine
         }
         lastOperationOk = true;
     }
- 
+
     /**
      * Deja la maquina mostrando exactamente la configuracion indicada,
-     * una posicion por rueda. Las ruedas fijas no se modifican, aunque
-     * el arreglo traiga un color distinto para ellas.
+     * una posicion por rueda. Las ruedas fijas no se modifican.
      *
      * @param setSymbols colores deseados por rueda, izquierda a derecha
      */
@@ -307,13 +375,10 @@ public class SlotMachine
         lastOperationOk = true;
         refreshDisplay();
     }
- 
 
     /**
      * Retorna los colores de los simbolos en el orden en que estan
-     * ubicados dentro de la rueda, iniciando por el 1 (todas las
-     * ruedas comparten los mismos simbolos, por eso se consulta la
-     * primera).
+     * ubicados dentro de la rueda, iniciando por el 1.
      *
      * @return arreglo con los colores de los simbolos
      */
@@ -367,7 +432,7 @@ public class SlotMachine
     }
 
     /**
-     * Indica si la configuracion actual es ganadora, es decir, si
+     * Indica si la configuracion actual es ganadora si
      * todas las ruedas muestran el mismo simbolo.
      *
      * @return true si hay jackpot, false en caso contrario
@@ -383,7 +448,7 @@ public class SlotMachine
     }
 
     /**
-     * Hace visible el simulador (abre la ventana grafica).
+     * Hace visible el simulador.
      */
     public void makeVisible()
     {
@@ -394,8 +459,7 @@ public class SlotMachine
     }
 
     /**
-     * Hace invisible el simulador (oculta la ventana grafica), aunque
-     * el simulador sigue funcionando por dentro.
+     * Hace invisible el simulador.
      */
     public void makeInvisible()
     {
@@ -434,7 +498,7 @@ public class SlotMachine
 
     /**
      * Ajusta una posicion pedida para que quede dentro del rango
-     * valido [1, max].
+     * valido (1, max).
      */
     private int normalize(int pos, int max)
     {
@@ -470,14 +534,108 @@ public class SlotMachine
     {
         if (visible)
         {
-            display.show(configuration(), isJackpot());
+            display.show(wheels, isJackpot());
         }
     }
-    
+
     /**
-     * Si el simulador esta visible, espera un momento antes de seguir.
+     * Crea un objeto Wheel del tipo pedido.
+     *
+     * @param type nombre del tipo de rueda
+     * @return una rueda nueva del tipo pedido (normal si no se reconoce)
+     */
+    private Wheel createWheel(String type)
+    {
+        if (type.equalsIgnoreCase("lefty"))
+        {
+            return new LeftyWheel();
+        }
+        if (type.equalsIgnoreCase("rebel"))
+        {
+            return new RebelWheel();
+        }
+        if (type.equalsIgnoreCase("wild"))
+        {
+            return new WildWheel();
+        }
+        return new NormalWheel();
+    }
+
+    /**
+     * Crea un objeto Symbol del tipo pedido, con el color indicado.
+     *
+     * @param type nombre del tipo de simbolo
+     * @param color color del simbolo
+     * @return un simbolo nuevo del tipo pedido (normal si no se reconoce)
+     */
+    private Symbol createSymbol(String type, String color)
+    {
+        if (type.equalsIgnoreCase("ephemeral"))
+        {
+            return new EphemeralSymbol(color);
+        }
+        if (type.equalsIgnoreCase("shy"))
+        {
+            return new ShySymbol(color);
+        }
+        if (type.equalsIgnoreCase("growing"))
+        {
+            return new GrowingSymbol(color);
+        }
+        return new NormalSymbol(color);
+    }
+
+    /**
+     * Le avisa a cada rueda quien es, en este momento, la rueda que
+     * tiene a su izquierda. Se llama cada vez que el orden de las
+     * ruedas puede haber cambiado (agregar, eliminar o intercambiar).
+     */
+    private void rewireLeftyNeighbors()
+    {
+        for (int i = 0; i < wheels.size(); i++)
+        {
+            Wheel left = i == 0 ? null : wheels.get(i - 1);
+            wheels.get(i).updateLeftNeighbor(left);
+        }
+    }
+
+    /**
+     * Genera n colores distintos
+     *
+     * @param n cantidad de colores distintos a generar
+     * @return arreglo con n colores en formato "#RRGGBB"
+     */
+    private String[] generateDistinctColors(int n)
+    {
+        String[] colors = new String[n];
+        for (int i = 0; i < n; i++)
+        {
+            float hue = (float) i / n;
+            java.awt.Color c = java.awt.Color.getHSBColor(hue, 0.85f, 0.85f);
+            colors[i] = String.format("#%02X%02X%02X", c.getRed(), c.getGreen(), c.getBlue());
+        }
+        return colors;
+    }
+
+    /**
+     * Gira todas las ruedas al azar, repitiendo si por casualidad el
+     * resultado ya fuera jackpot, para que la maquina nunca empiece
+     * ya ganada (igual que exige el problema original de la maraton).
+     */
+    private void randomizeWithoutJackpot()
+    {
+        do
+        {
+            for (Wheel wheel : wheels)
+            {
+                wheel.spin();
+            }
+        }
+        while (wheels.size() > 1 && isJackpot());
+    }
+
+    /**
      * Se usa para que un giro paso a paso se vea como una animacion,
-     * en vez de saltar de golpe al resultado final.
      */
     private void pauseIfVisible()
     {
@@ -489,7 +647,7 @@ public class SlotMachine
             }
             catch (InterruptedException e)
             {
-                
+                // se ignora: no afecta el resultado de la rotacion
             }
         }
     }

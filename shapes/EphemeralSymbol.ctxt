@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=EphemeralSymbol
+comment0.text=\r\n\ Un\ simbolo\ que\ se\ va\ "cansando"\:\ cada\ vez\ que\ le\ toca\ ser\ el\r\n\ visible,\ se\ encoge\ un\ poco,\ hasta\ quedar\ reducido\ casi\ a\ un\r\n\ puntico\ y\ no\ desaparecer\ nunca\ del\ todo.\r\n\r\n\ @author\ Proyecto\ DOPO-POOB\r\n\ @version\ 1.0\r\n
+comment1.params=color
+comment1.target=EphemeralSymbol(java.lang.String)
+comment1.text=\r\n\ Crea\ un\ simbolo\ efimero\ del\ color\ indicado,\ con\ tamano\ normal.\r\n\r\n\ @param\ color\ color\ del\ simbolo\r\n
+comment2.params=
+comment2.target=void\ onSelected()
+comment2.text=\r\n\ Cada\ vez\ que\ este\ simbolo\ queda\ seleccionado\ se\ hace\ un\ poco\r\n\ mas\ pequeno,\ sin\ pasar\ de\ un\ tamano\ minimo.\r\n
+comment3.params=
+comment3.target=java.lang.String\ getTypeLabel()
+comment3.text=\r\n\ Retorna\ la\ etiqueta\ de\ este\ tipo\ de\ simbolo.\r\n\r\n\ @return\ siempre\ "E"\r\n
+numComments=4
